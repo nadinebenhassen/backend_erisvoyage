@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   async signup(signupDto: SignupDto) {
-    const { username, email, password} = signupDto;
+    const { username, email, password,role} = signupDto;
 
     // Hashage du mot de passe
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -27,11 +27,12 @@ export class AuthService {
       username,
       email,
       password: hashedPassword,
+      role
     
     });
 
     // Génération du token JWT après inscription
-    const payload = { username: newUser.username, sub: newUser._id };
+    const payload = { username: newUser.username, sub: newUser._id ,role:newUser.role};
     return {
       user: newUser,
       token: this.jwtService.sign(payload),
@@ -52,7 +53,7 @@ export class AuthService {
       throw new Error('ce utilisateur nexiste pas  ');  // Tu peux remplacer par une exception NestJS appropriée
     }
 
-    const payload = { username: user.username, sub: user._id };
+    const payload = { username: user.username, sub: user._id,role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
        user,
@@ -66,23 +67,7 @@ export class AuthService {
   }
   
 
-  generateResetCode(): string {
-    return uuidv4(); // Générer un code unique
-  }
-
-  async saveResetCode(userId: string, resetCode: string) {
-    // Ici, tu peux soit enregistrer le code dans la base de données, soit utiliser un autre moyen de stockage
-    await this.userService.updateUser(userId, { resetCode });
-  }
-  async findUserByResetCode(resetCode: string) {
-    return this.userService.findByResetCode(resetCode);
-  }
-
-  async updatePassword(userId: string, newPassword: string) {
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await this.userService.updateUser(userId, { password: hashedPassword });
-  }
-
+  
 
   async findUserByEmail(email: string) {
     return this.userService.findByEmail(email);

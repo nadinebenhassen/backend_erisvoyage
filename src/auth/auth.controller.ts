@@ -2,15 +2,18 @@ import { Controller, Post, Body,HttpCode, HttpStatus, Get, Query, UnauthorizedEx
 import { AuthService } from './auth.service';
 import { SignupDto } from 'src/dto/signup.dto';
 import { LoginDto } from 'src/dto/login.dto';
-import { ForgetPasswordDto } from 'src/dto/forgetpassword.dto';
-import{ResetPasswordDto} from'src/dto/reset-password.dto'
 import { EmailService } from '../email/email.service';
 import { JwtAuthGuard } from './jwt.guard';
+import { RoleGuard } from './role/Role.guard';
+import { Roles } from './roles/role.decorator';
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService,
     private readonly emailService: EmailService,
   ) {}
+  @Roles('admin')
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Post('signup')
   async signup(@Body() signupDto: SignupDto) {
     return this.authService.signup(signupDto);

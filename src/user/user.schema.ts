@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export enum Role{
  admin='admin',
- user='user'
+ user='assistant'
 
 }
 export type UserDocument = User & Document;
