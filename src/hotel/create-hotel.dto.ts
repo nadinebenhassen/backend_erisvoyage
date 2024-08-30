@@ -9,9 +9,9 @@ export class CreateHotelDto {
   @IsNotEmpty()
   readonly location: string;
 
-  @IsNumber()
+  
   @IsNotEmpty()
-  readonly price: number;
+  readonly price: string;
 
   @IsString()
   @IsNotEmpty()

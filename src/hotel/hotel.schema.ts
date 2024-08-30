@@ -1,18 +1,23 @@
-import { Schema, Document } from 'mongoose';
+// src/hotel/schemas/hotel.schema.ts
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
-export const HotelSchema = new Schema({
-  title: { type: String, required: true },
-  location: { type: String, required: true },
-  price: { type: String, required: true },
-  description: { type: String, required: true },
-  image: { type: String, required: true },
-});
-
-export interface Hotel extends Document {
-  id?: string;
+@Schema()
+export class Hotel extends Document {
+  @Prop({ required: true })
   title: string;
+
+  @Prop({ required: true })
   location: string;
+
+  @Prop({ required: true })
   price: string;
+
+  @Prop({ required: true })
   description: string;
+
+  @Prop({ required: true })
   image: string;
 }
+
+export const HotelSchema = SchemaFactory.createForClass(Hotel);

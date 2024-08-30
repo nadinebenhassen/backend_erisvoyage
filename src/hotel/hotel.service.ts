@@ -6,6 +6,7 @@ import { CreateHotelDto } from './create-hotel.dto';
 
 @Injectable()
 export class HotelService {
+ 
   constructor(@InjectModel('Hotel') private readonly hotelModel: Model<Hotel>) {}
 
   async create(createHotelDto: CreateHotelDto): Promise<Hotel> {
@@ -33,11 +34,28 @@ export class HotelService {
     return hotel;
   }
 
-  async remove(id: string): Promise<any> {
-    const result = await this.hotelModel.findByIdAndDelete(id).exec();
-    if (!result) {
-      throw new NotFoundException(`Hotel with ID ${id} not found`);
+
+  async findByName(title: string): Promise<Hotel> {
+    const hotel = await this.hotelModel.findOne({ title: title }).exec();
+    if (!hotel) {
+      throw new NotFoundException(`Hotel with name "${title}" not found`);
     }
+    return hotel;
+
+  }
+  async findByNameAndDelete(name: string): Promise<Hotel> {
+    const hotel = await this.hotelModel.findOneAndDelete({ title: name }).exec();
+    if (!hotel) {
+      throw new NotFoundException(`Hotel with name "${name}" not found`);
+    }
+    return hotel;
+  }
+  async remove(title: string): Promise<Hotel> {
+    const result = await this.hotelModel.findOneAndDelete({ title:title}).exec();
+  
     return result;
   }
+
+
 }
+
