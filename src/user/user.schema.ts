@@ -7,7 +7,7 @@ export enum Role{
  user='user'
 
 }
-
+export type UserDocument = User & Document;
 @Schema()
 export class User extends Document {
   @Prop({ default: () => uuidv4(), unique: true })
@@ -20,7 +20,7 @@ export class User extends Document {
 
   @Prop({ required: true })
   password: string;
-@Prop({required:true})
+@Prop({})
 role:Role;
 
   @Prop({ default: Date.now })

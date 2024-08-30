@@ -9,6 +9,7 @@ import {  UserSchema } from 'src/user/user.schema';
 import { UserModule } from '../user/user.module'
 import { JwtModule } from '@nestjs/jwt';
 import { EmailModule } from '../email/email.module';  
+import { JwtStrategy } from './jwt.strategy';
 export const jwtConstants = {
   secret: 'DO NOT USE THIS VALUE. INSTEAD, CREATE A COMPLEX SECRET AND KEEP IT SAFE OUTSIDE OF THE SOURCE CODE.',
 };
@@ -17,11 +18,11 @@ export const jwtConstants = {
     UserModule,PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       global: true,
-      secret: jwtConstants.secret,
+      secret: jwtConstants.secret || "secretKey",
       signOptions: { expiresIn: '1h' },
     }),MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]), EmailModule,
   ],
-  providers: [AuthService],
+  providers: [AuthService,JwtStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 

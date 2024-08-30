@@ -1,16 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { SignupDto } from '../dto/signup.dto';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
+import { Model } from 'mongoose';
+import { User, UserDocument } from '../user/user.schema';
 
-
+import { InjectModel } from '@nestjs/mongoose';
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
   ) {}
 
   async signup(signupDto: SignupDto) {
@@ -56,6 +59,12 @@ export class AuthService {
 
     };
   }
+  async load(userId: string): Promise<User> {
+
+     const user = await this.userService.findUserById(userId)
+     return user
+  }
+  
 
   generateResetCode(): string {
     return uuidv4(); // Générer un code unique
