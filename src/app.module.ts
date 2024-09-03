@@ -9,6 +9,9 @@ import { HotelModule } from './hotel/hotel.module';
 import { CroisiereModule } from './croisiere/croisiere.module';
 import { ConfigModule } from '@nestjs/config';
 import { CountriesModule } from './countries/countries.module';
+import { CircuitModule } from './circuit/circuit.module';
+import { VoyageModule } from './voyage/voyage.module';
+import { GalaModule } from './gala/gala.module';
 @Module({
   imports: [ MongooseModule.forRoot('mongodb://0.0.0.0:27017/erisvoyage'), // Remplace par l'URL de ta base de données MongoDB
   DemandeModule,
@@ -16,7 +19,7 @@ import { CountriesModule } from './countries/countries.module';
    HotelModule,
    CroisiereModule,  ConfigModule.forRoot({
     isGlobal: true, // Rendre la configuration disponible globalement
-  }), CountriesModule,],
+  }), CountriesModule, CircuitModule, VoyageModule, GalaModule,],
   controllers: [AppController],
   providers: [AppService],
 })

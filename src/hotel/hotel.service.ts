@@ -26,13 +26,13 @@ export class HotelService {
     return hotel;
   }
 
-  async update(id: string, updateHotelDto: CreateHotelDto): Promise<Hotel> {
-    const hotel = await this.hotelModel.findByIdAndUpdate(id, updateHotelDto, { new: true }).exec();
-    if (!hotel) {
-      throw new NotFoundException(`Hotel with ID ${id} not found`);
-    }
-    return hotel;
-  }
+  // async update(id: string, updateHotelDto: CreateHotelDto): Promise<Hotel> {
+  //   const hotel = await this.hotelModel.findByIdAndUpdate(id, updateHotelDto, { new: true }).exec();
+  //   if (!hotel) {
+  //     throw new NotFoundException(`Hotel with ID ${id} not found`);
+  //   }
+  //   return hotel;
+  // }
 
 
   async findByName(title: string): Promise<Hotel> {
@@ -54,6 +54,18 @@ export class HotelService {
     const result = await this.hotelModel.findOneAndDelete({ title:title}).exec();
   
     return result;
+  }
+  async update(title: string, updateHotelDto: CreateHotelDto): Promise<Hotel> {
+    const updatedHotel = await this.hotelModel.findOneAndUpdate(
+      {  title:title },
+      updateHotelDto,
+      { new: true } // Retourne le document mis à jour
+    ).exec();
+
+    if (!updatedHotel) {
+      throw new NotFoundException(`Hotel with title "${title}" not found`);
+    }
+    return updatedHotel;
   }
 
 

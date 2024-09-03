@@ -27,11 +27,14 @@ export class HotelController {
     return this.hotelService.findOne(id);
   }
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() updateHotelDto: CreateHotelDto) {
-    return this.hotelService.update(id, updateHotelDto);
+  // @Put(':id')
+  // async update(@Param('id') id: string, @Body() updateHotelDto: CreateHotelDto) {
+  //   return this.hotelService.update(id, updateHotelDto);
+  // }
+  @Put('title/:title')
+  async update(@Param('title') title: string, @Body() updateHotelDto: CreateHotelDto) {
+    return this.hotelService.update(title, updateHotelDto);
   }
-
   // @Delete(':id')
   // async remove(@Param('id') id: string) {
   //   return this.hotelService.remove(id);
