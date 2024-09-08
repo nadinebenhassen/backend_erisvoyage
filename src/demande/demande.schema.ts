@@ -22,6 +22,8 @@ export class Demande {
 
   @Prop({ required: true })
   description: string;
+  @Prop({ required: true })
+  createdAt: string;
 }
 
 export const DemandeSchema = SchemaFactory.createForClass(Demande);

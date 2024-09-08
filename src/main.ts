@@ -8,7 +8,7 @@ async function bootstrap() {
 
   // Use CORS middleware
   app.use(cors({
-    origin: 'http://localhost:3000', // Accept requests from any origin
+    origin: ['http://localhost:3000','http://localhost:3001' ],// Accept requests from any origin
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true,

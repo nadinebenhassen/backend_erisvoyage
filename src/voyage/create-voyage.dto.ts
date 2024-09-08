@@ -16,7 +16,7 @@ export class CreateVoyageDto {
 
   @IsOptional()
   @IsNumber()
-  price?: number;
+  price?: string;
 
   @IsOptional()
   @IsString()

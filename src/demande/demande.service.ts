@@ -26,8 +26,18 @@ export class DemandeService {
     return this.demandeModel.findById(id).exec();
   }
 
+  // Mettre à jour un formulaire existant par ID
+  async update(id: string, updateDemandeDto: Partial<Demande>): Promise<Demande> {
+    return this.demandeModel.findByIdAndUpdate(id, updateDemandeDto, { new: true }).exec();
+  }
+
   // Supprimer un formulaire par ID
   async remove(id: string): Promise<any> {
     return this.demandeModel.findByIdAndDelete(id).exec();
+  }
+
+  // (Optionnel) Supprimer toutes les demandes
+  async removeAll(): Promise<any> {
+    return this.demandeModel.deleteMany({}).exec();
   }
 }

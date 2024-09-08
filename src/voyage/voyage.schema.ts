@@ -14,7 +14,7 @@ export class Voyage extends Document {
   image: string;
 
   @Prop()
-  price: number; // Optional, only if organized
+  price: string; // Optional, only if organized
 
   @Prop()
   program: string; // Program details, optional
