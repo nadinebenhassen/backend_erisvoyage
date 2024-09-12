@@ -6,28 +6,33 @@ import { CreateCircuitDto } from './create-circuit.dto';
 export class CircuitController {
   constructor(private readonly circuitService: CircuitService) {}
 
+  // Create a new circuit
   @Post()
   async create(@Body() createCircuitDto: CreateCircuitDto) {
     return this.circuitService.create(createCircuitDto);
   }
 
+  // Get all circuits
   @Get()
   async findAll() {
     return this.circuitService.findAll();
   }
 
-  @Get(':titre')
-  async findOne(@Param('titre') titre: string) {
-    return this.circuitService.findOneByTitre(titre);
+  // Get a single circuit by its ID
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.circuitService.findOneById(id);
   }
 
-  @Put(':titre')
-  async update(@Param('titre') titre: string, @Body() updateCircuitDto: CreateCircuitDto) {
-    return this.circuitService.update(titre, updateCircuitDto);
+  // Update a circuit by its ID
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() updateCircuitDto: CreateCircuitDto) {
+    return this.circuitService.update(id, updateCircuitDto);
   }
 
-  @Delete(':titre')
-  async remove(@Param('titre') titre: string) {
-    return this.circuitService.remove(titre);
+  // Delete a circuit by its ID
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return this.circuitService.remove(id);
   }
 }

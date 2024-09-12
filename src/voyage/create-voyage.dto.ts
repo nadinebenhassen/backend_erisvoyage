@@ -15,7 +15,7 @@ export class CreateVoyageDto {
   image: string;
 
   @IsOptional()
-  @IsNumber()
+ 
   price?: string;
 
   @IsOptional()

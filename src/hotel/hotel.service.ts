@@ -6,7 +6,6 @@ import { CreateHotelDto } from './create-hotel.dto';
 
 @Injectable()
 export class HotelService {
- 
   constructor(@InjectModel('Hotel') private readonly hotelModel: Model<Hotel>) {}
 
   async create(createHotelDto: CreateHotelDto): Promise<Hotel> {
@@ -26,48 +25,21 @@ export class HotelService {
     return hotel;
   }
 
-  // async update(id: string, updateHotelDto: CreateHotelDto): Promise<Hotel> {
-  //   const hotel = await this.hotelModel.findByIdAndUpdate(id, updateHotelDto, { new: true }).exec();
-  //   if (!hotel) {
-  //     throw new NotFoundException(`Hotel with ID ${id} not found`);
-  //   }
-  //   return hotel;
-  // }
-
-
-  async findByName(title: string): Promise<Hotel> {
-    const hotel = await this.hotelModel.findOne({ title: title }).exec();
+  async update(id: string, updateHotelDto: CreateHotelDto): Promise<Hotel> {
+    const hotel = await this.hotelModel.findByIdAndUpdate(id, updateHotelDto, { new: true }).exec();
     if (!hotel) {
-      throw new NotFoundException(`Hotel with name "${title}" not found`);
-    }
-    return hotel;
-
-  }
-  async findByNameAndDelete(name: string): Promise<Hotel> {
-    const hotel = await this.hotelModel.findOneAndDelete({ title: name }).exec();
-    if (!hotel) {
-      throw new NotFoundException(`Hotel with name "${name}" not found`);
+      throw new NotFoundException(`Hotel with ID ${id} not found`);
     }
     return hotel;
   }
-  async remove(title: string): Promise<Hotel> {
-    const result = await this.hotelModel.findOneAndDelete({ title:title}).exec();
-  
-    return result;
-  }
-  async update(title: string, updateHotelDto: CreateHotelDto): Promise<Hotel> {
-    const updatedHotel = await this.hotelModel.findOneAndUpdate(
-      {  title:title },
-      updateHotelDto,
-      { new: true } // Retourne le document mis à jour
-    ).exec();
 
-    if (!updatedHotel) {
-      throw new NotFoundException(`Hotel with title "${title}" not found`);
+  async remove(id: string): Promise<Hotel> {
+    const hotel = await this.hotelModel.findByIdAndDelete(id).exec();
+    if (!hotel) {
+      throw new NotFoundException(`Hotel with ID ${id} not found`);
     }
-    return updatedHotel;
+    return hotel;
   }
 
-
+ 
 }
-

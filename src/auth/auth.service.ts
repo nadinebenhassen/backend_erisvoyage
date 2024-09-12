@@ -1,20 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { SignupDto } from '../dto/signup.dto';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
+import { Model } from 'mongoose';
+import { User, UserDocument } from '../user/user.schema';
 
-
+import { InjectModel } from '@nestjs/mongoose';
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
   ) {}
 
   async signup(signupDto: SignupDto) {
-    const { username, email, password} = signupDto;
+    const { username, email, password,role} = signupDto;
 
     // Hashage du mot de passe
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -24,11 +27,12 @@ export class AuthService {
       username,
       email,
       password: hashedPassword,
+      role
     
     });
 
     // Génération du token JWT après inscription
-    const payload = { username: newUser.username, sub: newUser._id };
+    const payload = { username: newUser.username, sub: newUser._id ,role:newUser.role};
     return {
       user: newUser,
       token: this.jwtService.sign(payload),
@@ -49,31 +53,21 @@ export class AuthService {
       throw new Error('ce utilisateur nexiste pas  ');  // Tu peux remplacer par une exception NestJS appropriée
     }
 
-    const payload = { username: user.username, sub: user._id };
+    const payload = { username: user.username, sub: user._id,role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
        user,
 
     };
   }
+  async load(userId: string): Promise<User> {
 
-  generateResetCode(): string {
-    return uuidv4(); // Générer un code unique
+     const user = await this.userService.findUserById(userId)
+     return user
   }
+  
 
-  async saveResetCode(userId: string, resetCode: string) {
-    // Ici, tu peux soit enregistrer le code dans la base de données, soit utiliser un autre moyen de stockage
-    await this.userService.updateUser(userId, { resetCode });
-  }
-  async findUserByResetCode(resetCode: string) {
-    return this.userService.findByResetCode(resetCode);
-  }
-
-  async updatePassword(userId: string, newPassword: string) {
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await this.userService.updateUser(userId, { password: hashedPassword });
-  }
-
+  
 
   async findUserByEmail(email: string) {
     return this.userService.findByEmail(email);

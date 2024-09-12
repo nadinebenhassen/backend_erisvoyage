@@ -10,37 +10,42 @@ export class CircuitService {
     @InjectModel(Circuit.name) private readonly circuitModel: Model<Circuit>,
   ) {}
 
+  // Create a new circuit
   async create(createCircuitDto: CreateCircuitDto): Promise<Circuit> {
     const createdCircuit = new this.circuitModel(createCircuitDto);
     return createdCircuit.save();
   }
 
+  // Find all circuits
   async findAll(): Promise<Circuit[]> {
     return this.circuitModel.find().exec();
   }
 
-  async findOneByTitre(titre: string): Promise<Circuit> {
-    const circuit = await this.circuitModel.findOne({ titre }).exec();
+  // Find a circuit by its ID
+  async findOneById(id: string): Promise<Circuit> {
+    const circuit = await this.circuitModel.findById(id).exec();
     if (!circuit) {
-      throw new NotFoundException(`Circuit with titre "${titre}" not found`);
+      throw new NotFoundException(`Circuit with ID "${id}" not found`);
     }
     return circuit;
   }
 
-  async update(titre: string, updateCircuitDto: CreateCircuitDto): Promise<Circuit> {
+  // Update a circuit by its ID
+  async update(id: string, updateCircuitDto: CreateCircuitDto): Promise<Circuit> {
     const updatedCircuit = await this.circuitModel
-      .findOneAndUpdate({ titre }, updateCircuitDto, { new: true })
+      .findByIdAndUpdate(id, updateCircuitDto, { new: true })
       .exec();
     if (!updatedCircuit) {
-      throw new NotFoundException(`Circuit with titre "${titre}" not found`);
+      throw new NotFoundException(`Circuit with ID "${id}" not found`);
     }
     return updatedCircuit;
   }
 
-  async remove(titre: string): Promise<Circuit> {
-    const circuit = await this.circuitModel.findOneAndDelete({ titre }).exec();
+  // Remove a circuit by its ID
+  async remove(id: string): Promise<Circuit> {
+    const circuit = await this.circuitModel.findByIdAndDelete(id).exec();
     if (!circuit) {
-      throw new NotFoundException(`Circuit with titre "${titre}" not found`);
+      throw new NotFoundException(`Circuit with ID "${id}" not found`);
     }
     return circuit;
   }

@@ -15,11 +15,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    // `payload` contient les données décodées du JWT, comme l'ID de l'utilisateur
-    const user = await this.userService.findUserById(payload.sub);
-    if (!user) {
-      throw new UnauthorizedException();
+   
+      return { id: payload.sub, username: payload.username,role:payload.role };
     }
-    return user;
   }
-}
+

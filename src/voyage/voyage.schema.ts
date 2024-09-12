@@ -10,7 +10,7 @@ export class Voyage extends Document {
   @Prop({ required: true })
   destination: string;
 
-  @Prop({ required: true })
+  @Prop()
   image: string;
 
   @Prop()

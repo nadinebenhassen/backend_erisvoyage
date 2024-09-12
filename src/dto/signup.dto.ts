@@ -1,5 +1,8 @@
-import { IsString, IsEmail, MinLength, IsEnum } from 'class-validator';
-
+import { IsString, IsEmail, MinLength, IsEnum, IsNotEmpty } from 'class-validator';
+export enum Role{
+  Admin = 'admin',
+  User = 'assistant'
+}
 
 export class SignupDto {
   @IsString()
@@ -12,5 +15,8 @@ export class SignupDto {
   @MinLength(6)
   password: string;
 
+  @IsNotEmpty()
+    @IsString()
+    readonly role: Role;
  
 }

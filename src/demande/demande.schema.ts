@@ -22,10 +22,9 @@ export class Demande {
 
   @Prop({ required: true })
   description: string;
-  @Prop({ required: true })
-  createdAt: string;
+
+  @Prop({ required: true, default: Date.now }) // Use @Prop with default for Date
+  createdAt: Date;
 }
 
 export const DemandeSchema = SchemaFactory.createForClass(Demande);
-
-  
